@@ -5,207 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>VAULT</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-        }
-
-        header {
-            text-align: center;
-            padding: 20px;
-            background-color: #4a90e2;
-            color: white;
-            font-size: 1.5em;
-        }
-
-        .filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            padding: 20px;
-            background-color: #ffffff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .filters label {
-            display: flex;
-            flex-direction: column;
-            font-size: 0.9em;
-            color: #333;
-        }
-
-        .filters select,
-        .filters input {
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 0.9em;
-        }
-
-        .filters button {
-            padding: 10px 20px;
-            background-color: #4a90e2;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        .filters button:hover {
-            background-color: #357ab8;
-        }
-
-        .card-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .card {
-            overflow: hidden;
-            text-align: center;
-            width: 140px;
-            height: 200px;
-            transition: transform 0.2s ease-in-out;
-        }
-
-        .card:hover {
-            transform: scale(1.1);
-        }
-
-        .card img {
-            width: 100%;
-            height: 100%;
-            border-radius: 5px;
-        }
-
-        .card p {
-            margin: 10px 0;
-            font-size: 0.9em;
-            color: #333;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 90%;
-            width: 400px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            position: relative;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            cursor: pointer;
-            font-size: 20px;
-            color: #333;
-        }
-
-        .close-modal:hover {
-            color: #000;
-        }
-
-        @media (max-width: 768px) {
-            .filters {
-                flex-direction: column;
-                align-items: center;
-                gap: 50px;
-                padding: 10px;
-            }
-
-            .filters label {
-                width: 100%;
-                text-align: left;
-            }
-
-            .filters select,
-            .filters input {
-                width: 100%;
-            }
-
-            .card {
-                width: 80px;
-                height: 110px;
-
-            }
-
-            .modal-content {
-                width: 90%;
-            }            
-
-            .card-list {
-                gap: 5px;
-                padding: 5px;
-            }
-        }
-    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
 </head>
 
 <body>
-    <label>Set:
-        <select id="filter-set">
-            <option value="">Selecciona un set</option>
-        </select>
-    </label>
-    <label>Nombre: <input type="text" id="filter-name"></label>
-    <label>Color:
-        <select id="filter-color">
-            <option value="">Todos</option>
-            <option value="Amber">Ámbar</option>
-            <option value="Amethyst">Amatista</option>
-            <option value="Emerald">Esmeralda</option>
-            <option value="Ruby">Rubi</option>
-            <option value="Sapphire">Zafiro</option>
-            <option value="Steel">Acero</option>
-        </select>
-    </label>
-    <label>Rareza:
-        <select id="filter-rarity">
-            <option value="">Todas</option>
-            <option value="Common">Comun</option>
-            <option value="Uncommon">No comun</option>
-            <option value="Rare">Rara</option>
-            <option value="Super_rare">Super Rara</option>
-            <option value="Legendary">Legendaria</option>
-            <option value="Enchanted">Encantada</option>
-            <option value="Iconic">Iconica</option>
-            <option value="Promo">Promo</option>
-        </select>
-    </label>
-    <label>Tipo:
-        <select id="filter-type">
-            <option value="">Todos</option>
-            <option value="Character">Personaje</option>
-            <option value="Item">Item</option>
-            <option value="Action">Accion</option>
-            <option value="Song">Cancion</option>
-        </select>
-    </label>
-    <button id="apply-filters">Buscar</button>
-    <div id="cards" class="card-list">Usa los filtros para buscar cartas.</div>
+    <header>
+        <div class="header-top">
+            <input type="text" id="filter-name" placeholder="Buscar por nombre">
+        </div>
+
+        <div class="filters">
+            <label>Set
+                <select id="filter-set">
+                    <option value="">Selecciona un set</option>
+                </select>
+            </label>
+
+            <label>Color
+                <select id="filter-color">
+                    <option value="">Todos</option>
+                    <option value="Amber" data-image="img/amber.png">Ámbar</option>
+                    <option value="Amethyst" data-image="img/amethyst.png">Amatista</option>
+                    <option value="Emerald" data-image="img/emerald.png">Esmeralda</option>
+                    <option value="Ruby" data-image="img/ruby.png">Rubi</option>
+                    <option value="Sapphire" data-image="img/sapphire.png">Zafiro</option>
+                    <option value="Steel" data-image="img/steel.png">Acero</option>
+                </select>
+            </label>
+
+            <label>Rareza
+                <select id="filter-rarity">
+                    <option value="">Todas</option>
+                    <option value="Common" data-image="img/common.png">Comun</option>
+                    <option value="Uncommon" data-image="img/uncommon.png">No comun</option>
+                    <option value="Rare" data-image="img/rare.png">Rara</option>
+                    <option value="Super_rare" data-image="img/super_rare.png">Super Rara</option>
+                    <option value="Legendary" data-image="img/legendary.png">Legendaria</option>
+                    <option value="Enchanted" data-image="img/enchanted.png">Encantada</option>
+                    <option value="Epic" data-image="img/epic.png">Epica</option>
+                    <option value="Iconic" data-image="img/iconic.png">Iconica</option>
+                    <option value="Promo" data-image="img/promo.png">Promo</option>
+                </select>
+            </label>
+
+            <label>Tipo
+                <select id="filter-type">
+                    <option value="">Todos</option>
+                    <option value="Character">Personaje</option>
+                    <option value="Item">Item</option>
+                    <option value="Action">Accion</option>
+                    <option value="Song">Cancion</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="filters-actions">
+            <button id="apply-filters">Buscar</button>
+        </div>
+
+        <div class="toggle-header" id="toggle-header">
+            <span>&#9650;</span> <!-- Flecha hacia abajo -->
+        </div>
+    </header>
+
+    <main>
+        <div id="cards" class="card-list">Usa los filtros para buscar cartas.</div>
+    </main>
 
     <!-- Modal -->
     <div id="modal" class="modal">
@@ -215,7 +80,38 @@
         </div>
     </div>
 
+    <!-- SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT SCRIPT -->
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Incluir Select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
     <script>
+        $('#filter-color').select2({
+            templateResult: function (option) {
+                if (!option.id) return option.text;
+                const img = $(option.element).data('image');
+                return $('<span style="position:relative;bottom:10px"><img src="' + img + '" style="width:30px;position:relative;bottom:-10px"/> ' + option.text + '</span>');
+            },
+            templateSelection: function (option) {
+                if (!option.id) return option.text;
+                const img = $(option.element).data('image');
+                return $('<span style="position:relative;bottom:4px"><img src="' + img + '" style="width:20px; position:relative;bottom:-5px"/> ' + option.text + '</span>');
+            }
+        });
+        $('#filter-rarity').select2({
+            templateResult: function (option) {
+                if (!option.id) return option.text;
+                const img = $(option.element).data('image');
+                return $('<span style="position:relative;bottom:10px"><img src="' + img + '" style="width:30px;position:relative;bottom:-10px"/> ' + option.text + '</span>');
+            },
+            templateSelection: function (option) {
+                if (!option.id) return option.text;
+                const img = $(option.element).data('image');
+                return $('<span style="position:relative;bottom:4px"><img src="' + img + '" style="width:20px; position:relative;bottom:-5px"/> ' + option.text + '</span>');
+            }
+        });
         // Cargar los sets disponibles
         async function loadSets() {
             const setSelect = document.getElementById('filter-set');
@@ -228,15 +124,17 @@
                 const allOption = document.createElement('option');
                 allOption.value = 'all'; // Valor especial para "Todos"
                 allOption.textContent = 'Todos los sets';
+
                 setSelect.appendChild(allOption);
 
                 // Accede a `results` para obtener el array de sets
-                sets.results.forEach(set => {
+                sets.results.reverse().forEach(set => {
                     const option = document.createElement('option');
                     option.value = set.id; // ID del set
                     option.textContent = `${set.name} (${set.code})`; // Nombre y código del set
                     setSelect.appendChild(option);
                 });
+
             } catch (e) {
                 console.error('Error al cargar los sets:', e.message);
             }
@@ -289,8 +187,6 @@
                 }
 
                 filteredCards.forEach(card => {
-                    const div = document.createElement('div');
-                    div.className = 'card';
 
                     // Verificar la disponibilidad de las imágenes
                     const imageUri = card.image_uris.digital.normal ||
@@ -299,12 +195,12 @@
                         'https://via.placeholder.com/150'; // Imagen predeterminada
 
                     const img = document.createElement('img');
+                    img.className = 'card';
                     img.src = imageUri;
                     img.alt = card.name;
                     img.style.cursor = 'pointer';
                     img.addEventListener('click', () => showCardModal(card));
-                    div.appendChild(img);
-                    container.appendChild(div);
+                    container.appendChild(img);
                 });
             } catch (e) {
                 container.innerHTML = `Error al cargar las cartas: ${e.message}`;
@@ -354,9 +250,286 @@
             fetchCardsBySet();
         };
 
+        document.getElementById('toggle-header').addEventListener('click', function () {
+            const header = document.querySelector('header');
+            header.classList.toggle('header-collapsed'); // Alternar la clase para expandir/contraer
+        });
+
         // Cargar los sets al inicio
         loadSets();
     </script>
-</body>
+    <!-- ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("bckg.jpg");
+            background-size: 100% auto;
+            background-repeat: repeat-y;
+        }
+
+        header {
+            position: relative;
+            /* Necesario para posicionar la flecha dentro del header */
+            width: 90%;
+            margin: 2% auto 0 auto;
+            padding: 20px 10px;
+            border-radius: 10px;
+            background: linear-gradient(336deg,
+                    #eaf2ff 0%,
+                    #e6e0ff 40%,
+                    #ffe8f1 70%,
+                    #ffffff 100%);
+            color: white;
+            box-shadow: 0px 0px 20px 5px #000000;
+            overflow: hidden;
+            /* Asegura que el contenido no se desborde */
+            transition: all 0.5s ease;
+            /* Transición fluida */
+        }
+
+        .header-top {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            justify-content: space-between;
+        }
+
+        .header-top h1 {
+            margin: 0;
+            font-size: 1.6rem;
+            color: #ffffff;
+            flex: 0 0 auto;
+        }
+
+        .header-top input#filter-name {
+            flex: 1 1 420px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            outline: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .filters {
+            max-width: 1200px;
+            margin: 12px auto 8px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            padding: 12px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .filters label {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        .filters select,
+        .filters input {
+            padding: 6px 8px;
+            border: 1px solid #d0d7e0;
+            border-radius: 6px;
+            font-size: 0.95em;
+            background: #fff;
+        }
+
+        .select2 {
+            width: 100% !important;
+            border-radius: 6px;
+            font-size: 0.95em;
+            background: #fff;
+        }
+
+        /* Botón de buscar reducido y centrado */
+        .filters-actions {
+            display: flex;
+            justify-content: center;
+        }
+
+        .filters-actions button {
+            padding: 8px 16px;
+            width: 140px;
+            background: linear-gradient(200deg, #cdbbff 0%, #e6e0ff 40%, #ffc9f3 70%, #e4b2d7 100%);
+            background-size: 200% 200%;
+            background-position: 0% 100%;
+            color: #3e4e4f;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, .2);
+            transition: all .5s ease-in-out;
+        }
+
+        .filters-actions button:hover {
+            transform: scale(1.15);
+            background-position: 100% 0%;
+        }
+
+        .card-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            padding: 20px;
+            color: rgb(233, 211, 248);
+            text-shadow: 0px 0px 5px #000;
+        }
+
+        .card {
+            height: 250px;
+            transition: all 0.2s ease;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 30%);
+            border-radius: 10px;
+        }
+
+        .card:hover {
+            transform: scale(1.15);
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .card p {
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 90%;
+            width: 400px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .close-modal:hover {
+            color: #000;
+        }
+
+
+        .toggle-header {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            width: 27px;
+            height: 27px;
+            text-align: center;
+            cursor: pointer;
+            padding: 10px;
+            background: linear-gradient(200deg, #ffffff 0%, #e6e0ff 40%, #ffc9f3 70%, #b387a8 100%);    
+            border-top: 1px solid #d0d7e0;
+            border-radius: 50%;
+            box-shadow: 0px 0px 4px 3px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .toggle-header span {
+            font-size: 1.5rem;
+            color: #333;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        /* Cambiar la dirección de la flecha cuando el header está colapsado */
+        .header-collapsed .toggle-header span {
+            transform: rotate(180deg);
+            /* Flecha hacia arriba */
+            transition: all 0.3s ease;
+        }
+
+        /* Estilo para el header cuando está colapsado */
+        .header-collapsed {
+            height: 0px;
+            /* Altura mínima del header */
+            overflow: hidden;
+            transition: all 0.5s ease;
+            /* Transición más fluida */
+        }
+
+        /* Asegurar que el botón de la flecha siempre sea visible */
+        .header-collapsed .toggle-header {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            /* margin: auto; */
+            width: -webkit-fill-available;
+            height: 50%;
+            background: linear-gradient(200deg, #cdbbff 0%, #e6e0ff 40%, #ffc9f3 70%, #e4b2d7 100%);            
+            border-top: 1px solid #d0d7e0;
+            border-radius: 0;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: center;
+                padding: 10px;
+            }
+
+            .filters label {
+                width: 100%;
+                text-align: left;
+            }
+
+            .filters select,
+            .filters input {
+                width: 100%;
+            }
+
+            .card {
+                width: 80px;
+                height: 110px;
+
+            }
+
+            .modal-content {
+                width: 90%;
+            }
+
+            .card-list {
+                gap: 5px;
+                padding: 5px;
+            }
+        }
+    </style>
 
 </html>
