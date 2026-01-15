@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>VAULT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Winky+Rough:wght@300..900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+    <script src="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/cardTextTranslations.js"></script>
 </head>
 
 <body>
@@ -24,27 +26,57 @@
             <label>Color
                 <select id="filter-color">
                     <option value="">Todos</option>
-                    <option value="Amber" data-image="img/amber.png">Ámbar</option>
-                    <option value="Amethyst" data-image="img/amethyst.png">Amatista</option>
-                    <option value="Emerald" data-image="img/emerald.png">Esmeralda</option>
-                    <option value="Ruby" data-image="img/ruby.png">Rubi</option>
-                    <option value="Sapphire" data-image="img/sapphire.png">Zafiro</option>
-                    <option value="Steel" data-image="img/steel.png">Acero</option>
+                    <option value="Amber"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/amber.png">
+                        Ámbar</option>
+                    <option value="Amethyst"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/amethyst.png">
+                        Amatista</option>
+                    <option value="Emerald"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/emerald.png">
+                        Esmeralda</option>
+                    <option value="Ruby"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/ruby.png">
+                        Rubi</option>
+                    <option value="Sapphire"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/sapphire.png">
+                        Zafiro</option>
+                    <option value="Steel"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/steel.png">
+                        Acero</option>
                 </select>
             </label>
 
             <label>Rareza
                 <select id="filter-rarity">
                     <option value="">Todas</option>
-                    <option value="Common" data-image="img/common.png">Comun</option>
-                    <option value="Uncommon" data-image="img/uncommon.png">No comun</option>
-                    <option value="Rare" data-image="img/rare.png">Rara</option>
-                    <option value="Super_rare" data-image="img/super_rare.png">Super Rara</option>
-                    <option value="Legendary" data-image="img/legendary.png">Legendaria</option>
-                    <option value="Enchanted" data-image="img/enchanted.png">Encantada</option>
-                    <option value="Epic" data-image="img/epic.png">Epica</option>
-                    <option value="Iconic" data-image="img/iconic.png">Iconica</option>
-                    <option value="Promo" data-image="img/promo.png">Promo</option>
+                    <option value="Common"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/common.png">
+                        Comun</option>
+                    <option value="Uncommon"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/uncommon.png">
+                        No comun</option>
+                    <option value="Rare"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/rare.png">
+                        Rara</option>
+                    <option value="Super_rare"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/super_rare.png">
+                        Super Rara</option>
+                    <option value="Legendary"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/legendary.png">
+                        Legendaria</option>
+                    <option value="Enchanted"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/enchanted.png">
+                        Encantada</option>
+                    <option value="Epic"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/epic.png">
+                        Epica</option>
+                    <option value="Iconic"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/iconic.png">
+                        Iconica</option>
+                    <option value="Promo"
+                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/promo.png">
+                        Promo</option>
                 </select>
             </label>
 
@@ -222,17 +254,96 @@
                 card.image_uris.digital.small ||
                 'https://via.placeholder.com/400'; // Imagen predeterminada
 
+            // Traducir partes del texto
+            let translatedText = card.text || '';
+
+            // Detectar y excluir títulos en mayúsculas
+            const titleRegex = /^([A-Z0-9\s]+)\s(.*)$/; // Detecta un título en mayúsculas seguido del resto del texto
+            const match = translatedText.match(titleRegex);
+
+            let title = '';
+            let body = translatedText;
+
+            if (match) {
+                title = match[1]; // El título en mayúsculas
+                body = match[2]; // El resto del texto
+            }
+
+            // Ordenar las claves de traducción por longitud (de mayor a menor)
+            const sortedKeys = Object.keys(cardTextTranslations).sort((a, b) => b.length - a.length);
+
+            // Traducir solo el cuerpo del texto
+            sortedKeys.forEach(key => {
+                // Escapar caracteres especiales en la clave para usarlos en la expresión regular
+                const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escapa caracteres especiales
+                const regex = new RegExp(`\\b${escapedKey}\\b`, 'gi'); // \b asegura que sea una palabra completa, 'i' permite coincidencias insensibles a mayúsculas
+                body = body.replace(regex, match => {
+                    const translation = cardTextTranslations[key.toLowerCase()]; // Buscar siempre en minúsculas
+                    if (!translation) return match; // Si no hay traducción, devolver el texto original
+
+                    // Ajustar la capitalización según el texto original
+                    if (match[0] === match[0].toUpperCase()) {
+                        // Si la primera letra está en mayúscula, capitalizar la traducción
+                        return translation.charAt(0).toUpperCase() + translation.slice(1);
+                    }
+                    return translation; // Si no, devolver la traducción tal cual
+                });
+            });
+
+            // Traducir manualmente los valores como {S}, {I}, {W}, {L}
+            const manualTranslations = {
+                "{S}": "fuerza",
+                "{I}": "tinta",
+                "{W}": "voluntad",
+                "{L}": "lore",
+            };
+
+            Object.keys(manualTranslations).forEach(key => {
+                const regex = new RegExp(key, 'g'); // Buscar todas las apariciones de la clave
+                body = body.replace(regex, manualTranslations[key]);
+            });
+
+            // Reconstruir el texto final con el título intacto
+            translatedText = title ? `${title} ${body}` : body;
+
             modalBody.innerHTML = `
-        <img src="${imageUri}" alt="${card.name}" style="max-width:100%"><br>
-        <strong>${card.name} - ${card.version}</strong><br>
-        <em>${type} - ${card.ink || 'Sin color'} - ${card.rarity || 'Sin rareza'}</em><br>
-        <b>Coste:</b> ${card.cost || 'N/A'} | <b>Fuerza:</b> ${card.strength || 'N/A'} | <b>Voluntad:</b> ${card.willpower || 'N/A'}<br>
-        <b>Set:</b> ${card.set.name || 'Sin set'} (${card.set.code || 'N/A'})<br>
-        <b>Artista:</b> ${card.illustrators ? card.illustrators.join(', ') : 'Sin artista'}<br>
-        <b>Clasificación:</b> ${card.classifications ? card.classifications.join(', ') : 'Sin clasificación'}<br>
-        <b>Texto:</b> ${card.text || 'Sin texto'}<br>
-        <i>${card.flavor_text || 'Sin texto de ambientación'}</i>
-    `;
+            <div class="modal-content">
+                <img src="${imageUri}" alt="${card.name}">
+                <div class="modal-info">
+                    <h2>${card.name || ''}${card.version ? ' - ' + card.version : ''}</h2>
+                    ${card.classifications ? `<p>${card.classifications.join(', ')}</p>` : ''}
+                    <p><strong>Tipo:</strong> ${card.type}</p>
+                    <p><strong>Color:</strong> ${card.ink || 'Sin color'}</p>
+                    <p><strong>Rareza:</strong> ${card.rarity || 'Sin rareza'}</p>
+                    <p><strong>Set:</strong> (${card.set.code || 'N/A'}) ${card.set.name || 'Sin set'}</p>
+                    ${card.illustrators ? `<p><strong>Artista:</strong> ${card.illustrators.join(', ')}</p>` : ''}
+                    <div class="stats">
+                        ${card.cost ? `<div>
+                            <span>${card.cost || 'N/A'}</span>
+                            <small>Coste</small>
+                        </div>` : ''}
+                        ${card.strength ? `<div>
+                            <span>${card.strength || 'N/A'}</span>
+                            <small>Fuerza</small>
+                        </div>` : ''}
+                        ${card.willpower ? `<div>
+                            <span>${card.willpower || 'N/A'}</span>
+                            <small>Voluntad</small>
+                        </div>` : ''}                        
+                        ${card.lore ? `<div>
+                            <span>${card.lore || 'N/A'}</span>
+                            <small>Lore</small>
+                        </div>` : ''}
+                    </div>
+                <p>${translatedText}</p>
+                    ${card.flavor_text ? '<p class="flavor-text">' + card.flavor_text + '</p>' : ''}
+                    <div class="prices">
+                        ${card.prices.usd ? `<p><strong>Precio:</strong> ${card.prices.usd}$</p>` : ''}
+                        ${card.prices.usd_foil ? `<p><strong>Precio Foil:</strong> ${card.prices.usd_foil}$</p>` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
         }
 
         // Cerrar modal
@@ -260,11 +371,17 @@
     </script>
     <!-- ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS ESTILOS CSS -->
     <style>
+        * {
+            font-family: "Winky Rough", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url("bckg.jpg");
+            background-image: url("https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/bg.png");
             background-size: 100% auto;
             background-repeat: repeat-y;
         }
@@ -276,11 +393,7 @@
             margin: 2% auto 0 auto;
             padding: 20px 10px;
             border-radius: 10px;
-            background: linear-gradient(336deg,
-                    #eaf2ff 0%,
-                    #e6e0ff 40%,
-                    #ffe8f1 70%,
-                    #ffffff 100%);
+            background: linear-gradient(336deg, #eaf2ff 0%, #e6e0ff 40%, #ffe8f1 70%, #ffffff 100%);
             color: white;
             box-shadow: 0px 0px 20px 5px #000000;
             overflow: hidden;
@@ -381,20 +494,20 @@
             flex-wrap: wrap;
             gap: 15px;
             justify-content: center;
-            padding: 20px;
+            padding: 20px 50px;
             color: rgb(233, 211, 248);
             text-shadow: 0px 0px 5px #000;
         }
 
         .card {
-            height: 250px;
+            height: 300px;
             transition: all 0.2s ease;
             box-shadow: 5px 5px 10px rgba(0, 0, 0, 30%);
             border-radius: 10px;
         }
 
         .card:hover {
-            transform: scale(1.15);
+            transform: scale(1.2);
         }
 
         .card img {
@@ -416,19 +529,81 @@
             top: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.8);
+            /* Fondo oscuro para resaltar el modal */
             justify-content: center;
             align-items: center;
         }
 
         .modal-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 90%;
-            width: 400px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: row;
+            background: linear-gradient(336deg, #eaf2ff 0%, #e6e0ff 40%, #ffe8f1 70%, #ffffff 100%);
+            border-radius: 15px;
+            overflow: hidden;
+            max-width: 100%;
+            width: 800px;
             position: relative;
+            box-shadow: 0px 0px 10px #000000 inset;
+        }
+
+        .modal-content img {
+            flex: 1;
+            max-width: 50%;
+            object-fit: contain;
+            margin: 10px;
+        }
+
+        .modal-info {
+            flex: 1;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: #333;
+            font-family: "Winky Rough", sans-serif;
+        }
+
+        .modal-info h2 {
+            font-size: 1.8rem;
+            margin: 0;
+            color: #444;
+        }
+
+        .modal-info p {
+            margin: 0px;
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .modal-info .stats {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .modal-info .stats div {
+            text-align: center;
+            background: linear-gradient(336deg, #eaf2ff 0%, #e6e0ff 40%, #ffe8f1 70%, #ffffff 100%);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-info .stats div span {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .modal-info .stats div small {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .modal-info .flavor-text {
+            font-style: italic;
+            color: #666;
         }
 
         .close-modal {
@@ -436,14 +611,22 @@
             top: 10px;
             right: 15px;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 24px;
             color: #333;
+            background: linear-gradient(336deg, #eaf2ff 0%, #e6e0ff 40%, #ffe8f1 70%, #ffffff 100%);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
         }
 
         .close-modal:hover {
-            color: #000;
+            background: #f0f0f0;
         }
-
 
         .toggle-header {
             position: absolute;
@@ -454,7 +637,7 @@
             text-align: center;
             cursor: pointer;
             padding: 10px;
-            background: linear-gradient(200deg, #ffffff 0%, #e6e0ff 40%, #ffc9f3 70%, #b387a8 100%);    
+            background: linear-gradient(200deg, #ffffff 0%, #e6e0ff 40%, #ffc9f3 70%, #b387a8 100%);
             border-top: 1px solid #d0d7e0;
             border-radius: 50%;
             box-shadow: 0px 0px 4px 3px rgba(0, 0, 0, 0.2);
@@ -492,13 +675,26 @@
             /* margin: auto; */
             width: -webkit-fill-available;
             height: 50%;
-            background: linear-gradient(200deg, #cdbbff 0%, #e6e0ff 40%, #ffc9f3 70%, #e4b2d7 100%);            
+            background: linear-gradient(200deg, #cdbbff 0%, #e6e0ff 40%, #ffc9f3 70%, #e4b2d7 100%);
             border-top: 1px solid #d0d7e0;
             border-radius: 0;
             box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
         }
 
         @media (max-width: 768px) {
+            .toggle-header {
+                width: 20px;
+                height: 20px;
+            }
+
+            .toggle-header span {
+                font-size: 1rem;
+            }
+
+            header {
+                padding: 10px;
+            }
+
             .filters {
                 flex-direction: column;
                 align-items: center;
@@ -516,18 +712,71 @@
             }
 
             .card {
-                width: 80px;
-                height: 110px;
+                height: 160px;
 
             }
 
             .modal-content {
-                width: 90%;
+                flex-direction: column;
+                /* Cambiar a diseño en columna */
+                max-height: 95vh;
+                /* Limitar la altura máxima del modal al 90% de la pantalla */
+                width: 90vw;
+                /* Ajustar el ancho del modal */
+                overflow: hidden;
+                /* Evitar desbordamiento horizontal */
+            }
+
+            .modal-content img {
+                max-width: 100%;
+                /* Asegurar que la imagen ocupe todo el ancho */
+                height: auto;
+                /* Mantener la proporción de la imagen */
+                max-height: 55vh;
+                /* Limitar la altura máxima de la imagen al 40% de la pantalla */
+                object-fit: contain;
+                /* Ajustar la imagen dentro del contenedor */
+                margin: 10px 0;
+            }
+
+            .modal-info {
+                flex: 1;
+                overflow-y: auto;
+                /* Hacer que la información sea desplazable */
+                padding: 15px;
+                box-shadow: 0px 0px 10px #000000 inset;
+                margin: 5px;
+                border-radius: 10px;
+                background-color: #0000000f;
+            }
+
+            .modal-info h2 {
+                font-size: 1.5rem;
+            }
+
+            .modal-info p {
+                margin-bottom: 5px;
+            }
+
+            .modal-info .stats {
+                margin-bottom: 5px;
+            }
+
+            .modal {
+                display: none;
+                justify-content: center;
+                align-items: center;
+                overflow-y: auto;
             }
 
             .card-list {
                 gap: 5px;
                 padding: 5px;
+                font-size: 1.3rem;
+            }
+
+            .select2-container--default .select2-results>.select2-results__options {
+                max-height: 300px;
             }
         }
     </style>
