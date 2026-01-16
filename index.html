@@ -290,16 +290,12 @@
 
             // Traducir solo el cuerpo del texto
             sortedKeys.forEach(key => {
-                // Escapar caracteres especiales en la clave para usarlos en la expresión regular
                 const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escapa caracteres especiales
-                const regex = new RegExp(`\\b${escapedKey}\\b`, 'gi'); // \b asegura que sea una palabra completa, 'i' permite coincidencias insensibles a mayúsculas
+                const regex = new RegExp(`(?<!\\w)${escapedKey}(?!\\w)`, 'gi'); // \b asegura que sea una palabra completa, 
                 body = body.replace(regex, match => {
                     const translation = cardTextTranslations[key.toLowerCase()]; // Buscar siempre en minúsculas
                     if (!translation) return match; // Si no hay traducción, devolver el texto original
-
-                    // Ajustar la capitalización según el texto original
                     if (match[0] === match[0].toUpperCase()) {
-                        // Si la primera letra está en mayúscula, capitalizar la traducción
                         return translation.charAt(0).toUpperCase() + translation.slice(1);
                     }
                     return translation; // Si no, devolver la traducción tal cual
