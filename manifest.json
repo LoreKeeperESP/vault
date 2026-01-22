@@ -1,0 +1,14 @@
+{
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/exerted.ico",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/exerted.ico",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
