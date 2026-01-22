@@ -8,12 +8,12 @@
   "theme_color": "#000000",
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/exerted.png",
+      "src": "https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/icon192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/exerted.png",
+      "src": "https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
