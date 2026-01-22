@@ -2,7 +2,7 @@
   "name": "LoreKeeper",
   "short_name": "Lore",
   "description": "Revisa tu carta favorita de Lorcana en Español",
-  "start_url": "/index.html",
+  "start_url": "/vault/index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
