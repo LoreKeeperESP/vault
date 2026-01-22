@@ -24,27 +24,35 @@
             </label>
 
             <label>Color
-                <select id="filter-color">
-                    <option value="">Todos</option>
-                    <option value="Amber"
-                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/amber.png">
-                        Ámbar</option>
-                    <option value="Amethyst"
-                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/amethyst.png">
-                        Amatista</option>
-                    <option value="Emerald"
-                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/emerald.png">
-                        Esmeralda</option>
-                    <option value="Ruby"
-                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/ruby.png">
-                        Rubi</option>
-                    <option value="Sapphire"
-                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/sapphire.png">
-                        Zafiro</option>
-                    <option value="Steel"
-                        data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/steel.png">
-                        Acero</option>
-                </select>
+                <div style="display: flex; align-items: center; gap: 10px;">
+
+                    <div class="toggle-ink-mode" id="toggle-ink-mode" data-state="0">
+                        <img id="toggle-ink-mode-img"
+                            src="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/ink.png"
+                            alt="Tinta única y dual" style="filter: opacity(20%);" />
+                    </div>
+                    <select id="filter-color">
+                        <option value="">Todos</option>
+                        <option value="Amber"
+                            data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/amber.png">
+                            Ámbar</option>
+                        <option value="Amethyst"
+                            data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/amethyst.png">
+                            Amatista</option>
+                        <option value="Emerald"
+                            data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/emerald.png">
+                            Esmeralda</option>
+                        <option value="Ruby"
+                            data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/ruby.png">
+                            Rubi</option>
+                        <option value="Sapphire"
+                            data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/sapphire.png">
+                            Zafiro</option>
+                        <option value="Steel"
+                            data-image="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/steel.png">
+                            Acero</option>
+                    </select>
+                </div>
             </label>
 
             <label>Rareza
@@ -121,27 +129,27 @@
 
     <script>
 
-        
-                let cardTextTranslations = {};
-        
-                // Cargar el archivo JSON
-                async function loadCardTextTranslations() {
-                    try {
-                        const response = await fetch('https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/cardTextTranslations.json');
-                        cardTextTranslations = await response.json();
-                    } catch (error) {
-                        console.error('Error al cargar cardTextTranslations.json:', error.message);
-                    }
-                }
-        
-                // Llama a la función para cargar el JSON al inicio
-                loadCardTextTranslations();
+
+        let cardTextTranslations = {};
+
+        // Cargar el archivo JSON
+        async function loadCardTextTranslations() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/cardTextTranslations.json');
+                cardTextTranslations = await response.json();
+            } catch (error) {
+                console.error('Error al cargar cardTextTranslations.json:', error.message);
+            }
+        }
+
+        // Llama a la función para cargar el JSON al inicio
+        loadCardTextTranslations();
 
         $('#filter-color').select2({
             templateResult: function (option) {
                 if (!option.id) return option.text;
                 const img = $(option.element).data('image');
-                return $('<span style="position:relative;bottom:10px"><img src="' + img + '" style="width:30px;position:relative;bottom:-10px"/> ' + option.text + '</span>');
+                return $('<span style="position:relative;bottom:10px"><img src="' + img + '" style="position:relative;"/> ' + option.text + '</span>');
             },
             templateSelection: function (option) {
                 if (!option.id) return option.text;
@@ -153,7 +161,7 @@
             templateResult: function (option) {
                 if (!option.id) return option.text;
                 const img = $(option.element).data('image');
-                return $('<span style="position:relative;bottom:10px"><img src="' + img + '" style="width:30px;position:relative;bottom:-10px"/> ' + option.text + '</span>');
+                return $('<span style="position:relative;bottom:10px"><img src="' + img + '" style="position:relative;"/> ' + option.text + '</span>');
             },
             templateSelection: function (option) {
                 if (!option.id) return option.text;
@@ -189,6 +197,49 @@
             }
         }
 
+        const toggleInkMode = document.getElementById('toggle-ink-mode');
+        const toggleInkModeImg = document.getElementById('toggle-ink-mode-img');
+        toggleInkMode.addEventListener('click', () => {
+            const states = [
+                { src: 'https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/ink.png', alt: 'Tinta única y dual', style: 'filter: opacity(20%);' },
+                { src: 'https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/singleink.png', alt: 'Tinta única', style: 'filter: opacity(80%);' },
+                { src: 'https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/dualink.png', alt: 'Solo tintas duales', style: 'filter: opacity(80%);' }
+            ];
+            let currentState = parseInt(toggleInkMode.getAttribute('data-state'), 10);
+            currentState = (currentState + 1) % 3; // Cambiar entre 0, 1 y 2
+            toggleInkMode.setAttribute('data-state', currentState);
+            toggleInkModeImg.src = states[currentState].src;
+            toggleInkModeImg.alt = states[currentState].alt;
+            toggleInkModeImg.style = states[currentState].style;
+        });
+
+        function matchesInkMode(card, color, inkMode) {
+            if (!color) {
+                switch (inkMode) {
+                    case 0: // Tinta única y dual
+                        return card.ink || card.inks.length === 2;
+                    case 1: // Tinta única
+                        return !card.inks || card.inks.length === 1;
+                    case 2: // Solo tintas duales
+                        return !card.ink && card.inks.length === 2;
+                    default:
+                        return false; // Por seguridad, si el inkMode no es válido
+                }
+            }
+            else {
+                switch (inkMode) {
+                    case 0: // Tinta única y dual
+                        return card.ink === color || (!card.ink && card.inks.includes(color) && card.inks.length === 2);
+                    case 1: // Tinta única
+                        return card.ink === color && (!card.inks || card.inks.length === 1);
+                    case 2: // Solo tintas duales
+                        return !card.ink && card.inks.includes(color) && card.inks.length === 2;
+                    default:
+                        return false; // Por seguridad, si el inkMode no es válido
+                }
+            }
+        }
+
         // Obtener las cartas de un set específico
         async function fetchCardsBySet() {
             const container = document.getElementById('cards');
@@ -201,6 +252,7 @@
             const color = document.getElementById('filter-color').value;
             const rarity = document.getElementById('filter-rarity').value;
             const type = document.getElementById('filter-type').value;
+            const inkMode = parseInt(toggleInkMode.getAttribute('data-state'), 10);
 
             try {
                 let cards = [];
@@ -222,10 +274,14 @@
 
                 // Filtrar las cartas según los valores seleccionados
                 const filteredCards = cards.filter(card => {
-                    return (!name || card.name.toLowerCase().includes(name)) &&
-                        (!color || card.ink === color) &&
-                        (!rarity || card.rarity === rarity) &&
-                        (!type || card.type.includes(type));
+                    const matchesName = !name ||
+                        card.name.toLowerCase().includes(name) ||
+                        (card.version && card.version.toLowerCase().includes(name));
+                    const matchesColor = matchesInkMode(card, color, inkMode);
+                    const matchesRarity = !rarity || card.rarity === rarity;
+                    const matchesType = !type || card.type.includes(type);
+
+                    return matchesName && matchesColor && matchesRarity && matchesType;
                 });
 
                 // Mostrar las cartas
@@ -335,6 +391,15 @@
             // Reconstruir el texto final con el título intacto
             translatedText = title ? `${title} ${body}` : body;
 
+            let colorText = '';
+            if (card.ink) {
+                colorText = card.ink; // Si tiene un color definido, usarlo
+            } else if (card.inks && card.inks.length > 0) {
+                colorText = card.inks.join(' y '); // Si no tiene `ink`, usar los colores del array `inks`
+            } else {
+                colorText = 'Sin color'; // Si no tiene colores, mostrar "Sin color"
+            }
+
             modalBody.innerHTML = `
             <div class="modal-content">
                 <img src="${imageUri}" alt="${card.name}">
@@ -342,24 +407,36 @@
                     <h2>${card.name || ''}${card.version ? ' - ' + card.version : ''}</h2>
                     ${card.classifications ? `<p>${card.classifications.join(', ')}</p>` : ''}
                     <p><strong>Tipo:</strong> ${card.type}</p>
-                    <p><strong>Color:</strong> ${card.ink || 'Sin color'}</p>
+                    <p><strong>Color:</strong> ${colorText}</p>
                     <p><strong>Rareza:</strong> ${card.rarity || 'Sin rareza'}</p>
                     <p><strong>Set:</strong> (${card.set.code || 'N/A'}) ${card.set.name || 'Sin set'}</p>
                     ${card.illustrators ? `<p><strong>Artista:</strong> ${card.illustrators.join(', ')}</p>` : ''}
                     <div class="stats">
-                        ${card.cost ? `<div>
+                        ${card.cost ? `<div style="
+            background-image: url(https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/ink.png),
+            linear-gradient(336deg, #eaf2ff 0%, #e6e0ff 40%, #ffe8f1 70%, #ffffff 100%);
+            ">
                             <span>${card.cost || 'N/A'}</span>
                             <small>Coste</small>
                         </div>` : ''}
-                        ${card.strength ? `<div>
+                        ${card.strength ? `<div style="
+            background-image: url(https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/strength.png),
+            linear-gradient(336deg, #eaf2ff 0%, #e6e0ff 40%, #ffe8f1 70%, #ffffff 100%);
+            ">
                             <span>${card.strength || 'N/A'}</span>
                             <small>Fuerza</small>
                         </div>` : ''}
-                        ${card.willpower ? `<div>
+                        ${card.willpower ? `<div style="
+            background-image: url(https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/will.png),
+            linear-gradient(336deg, #eaf2ff 0%, #e6e0ff 40%, #ffe8f1 70%, #ffffff 100%);
+            ">
                             <span>${card.willpower || 'N/A'}</span>
                             <small>Voluntad</small>
                         </div>` : ''}                        
-                        ${card.lore ? `<div>
+                        ${card.lore ? `<div style="
+            background-image: url(https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/lore.png),
+            linear-gradient(336deg, #eaf2ff 0%, #e6e0ff 40%, #ffe8f1 70%, #ffffff 100%);
+            ">
                             <span>${card.lore || 'N/A'}</span>
                             <small>Lore</small>
                         </div>` : ''}
@@ -368,7 +445,7 @@
                     ${card.flavor_text ? '<p class="flavor-text">' + card.flavor_text + '</p>' : ''}
                     <div class="prices">
                         ${card.prices.usd ? `<p><strong>Precio:</strong> ${card.prices.usd}$</p>` : ''}
-                        ${card.prices.usd_foil ? `<p><strong>Precio Foil:</strong> ${card.prices.usd_foil}$</p>` : ''}
+                        ${card.prices.usd_foil ? `<p class="text-gradient-foil"><strong>Precio Foil:</strong> ${card.prices.usd_foil}$</p>` : ''}
                     </div>
                 </div>
             </div>
@@ -457,6 +534,39 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
 
+        .toggle-ink-mode {
+            display: inline-block;
+            background: linear-gradient(200deg, #cdbbff 0%, #e6e0ff 40%, #ffc9f3 70%, #e4b2d7 100%);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #3e4e4f;
+            text-align: center;
+            align-content: center;
+            padding-top: 2px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, .2);
+            transition: all 0.3s ease;
+        }
+
+        .toggle-ink-mode:hover {
+            transform: scale(1.1);
+        }
+
+        .toggle-ink-mode img {
+            width: 35px;
+            /* Ajusta el tamaño según sea necesario */
+            height: 25px;
+            object-fit: contain;
+        }
+
+
+        label>div {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            /* Espaciado entre el botón y el texto */
+        }
+
         .filters {
             max-width: 1200px;
             margin: 12px auto 8px;
@@ -516,6 +626,11 @@
         .filters-actions button:hover {
             transform: scale(1.15);
             background-position: 100% 0%;
+        }
+
+        li img {
+            width: 30px;
+            bottom: -10px;
         }
 
         .card-list {
@@ -612,10 +727,15 @@
 
         .modal-info .stats div {
             text-align: center;
-            background: linear-gradient(336deg, #eaf2ff 0%, #e6e0ff 40%, #ffe8f1 70%, #ffffff 100%);
-            padding: 10px;
+            padding: 5px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 50px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position-x: center;
+            background-blend-mode: overlay;
+
         }
 
         .modal-info .stats div span {
@@ -710,6 +830,28 @@
             box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
         }
 
+        .text-gradient-foil {
+            background: linear-gradient(45deg, #ff00ba, #00c3ff, #ff00ba);
+            -webkit-background-clip: text;
+            background-size: 200% 200%;
+            background-clip: text;
+            color: transparent;
+            width: fit-content;
+            animation: rainbow 2s linear infinite;
+            /* Añadir animación */
+        }
+
+        /* Definir la animación de arcoíris */
+        @keyframes rainbow {
+            0% {
+                background-position: 0% 200%;
+            }
+
+            100% {
+                background-position: 200% 0%;
+            }
+        }
+
         @media (max-width: 768px) {
             .toggle-header {
                 width: 20px;
@@ -738,6 +880,15 @@
             .filters select,
             .filters input {
                 width: 100%;
+            }
+
+            li img {
+                width: 20px;
+                bottom: -6px;
+            }
+
+            .toggle-ink-mode:hover {
+                transform: scale(1);
             }
 
             .card {
