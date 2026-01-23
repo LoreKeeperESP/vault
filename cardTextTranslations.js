@@ -37,6 +37,7 @@ const cardTextTranslations = {
         "the turn they're played": "el turno en que se juega",
         "the turn they’re played": "el turno en que se juega",
         "for the next location": "para la siguiente localización",
+        "you may play her": "puedes jugarla",
         "exert chosen opposing character": "agota el personaje oponente seleccionado",
         // ------ TRES PALABRAS
         "at the start": "al comienzo",
@@ -57,7 +58,6 @@ const cardTextTranslations = {
         "you can ink": "puedes tintar",
         "you may pay": "puedes pagar",
         "you may play": "puedes jugar",
-        "you may play her": "puedes jugarla",
         "you may put": "puedes poner",
         "you may choose": "puedes elegir",
         "to play this": "para jugar esto",
