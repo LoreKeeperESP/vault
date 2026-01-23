@@ -57,6 +57,7 @@ const cardTextTranslations = {
         "you can ink": "puedes tintar",
         "you may pay": "puedes pagar",
         "you may play": "puedes jugar",
+        "you may play her": "puedes jugarla",
         "you may put": "puedes poner",
         "you may choose": "puedes elegir",
         "to play this": "para jugar esto",
