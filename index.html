@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>LORE</title>
-    <link rel="icon" href="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/icon.png" type="image/x-icon">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/icon.png">
+    <link rel="icon" href="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/icon.png"
+        type="image/x-icon">
+    <link rel="apple-touch-icon"
+        href="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/icon.png">
     <link rel="manifest" href="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Winky+Rough:wght@300..900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
@@ -16,13 +18,12 @@
 <body>
     <header>
         <div class="header-top">
-            <input type="text" id="filter-name" placeholder="Buscar por nombre">
+            <input type="text" id="filter-name" placeholder="Buscar por nombre o titulo">
         </div>
 
         <div class="filters">
             <label>Set
                 <select id="filter-set">
-                    <option value="">Selecciona un set</option>
                 </select>
             </label>
 
@@ -220,7 +221,7 @@
             if (!color) {
                 switch (inkMode) {
                     case 0: // Tinta única y dual
-                        return card.ink || card.inks.length === 2;
+                        return card.ink || card.inks.length >= 1;
                     case 1: // Tinta única
                         return !card.inks || card.inks.length === 1;
                     case 2: // Solo tintas duales
@@ -232,7 +233,7 @@
             else {
                 switch (inkMode) {
                     case 0: // Tinta única y dual
-                        return card.ink === color || (!card.ink && card.inks.includes(color) && card.inks.length === 2);
+                        return card.ink === color || (!card.ink && card.inks.includes(color) && card.inks.length >= 1);
                     case 1: // Tinta única
                         return card.ink === color && (!card.inks || card.inks.length === 1);
                     case 2: // Solo tintas duales
@@ -396,9 +397,11 @@
 
             let colorText = '';
             if (card.ink) {
-                colorText = card.ink; // Si tiene un color definido, usarlo
+                colorText = card.ink + ' <img style="width:15px; filter: drop-shadow(0px 0px 2px black); vertical-align:middle; margin:0;" src="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/' + card.ink.toLowerCase() + '.png">'; // Si tiene un color definido, usarlo
             } else if (card.inks && card.inks.length > 0) {
-                colorText = card.inks.join(' y '); // Si no tiene `ink`, usar los colores del array `inks`
+                colorText = card.inks.map(ink => {
+                    return ink + ' <img style="width:15px; filter: drop-shadow(0px 0px 2px black); vertical-align:middle; margin:0;" src="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/' + ink.toLowerCase() + '.png">';
+                }).join(' y '); // Si no tiene `ink`, usar los colores del array `inks`
             } else {
                 colorText = 'Sin color'; // Si no tiene colores, mostrar "Sin color"
             }
@@ -411,7 +414,7 @@
                     ${card.classifications ? `<p>${card.classifications.join(', ')}</p>` : ''}
                     <p><strong>Tipo:</strong> ${card.type}</p>
                     <p><strong>Color:</strong> ${colorText}</p>
-                    <p><strong>Rareza:</strong> ${card.rarity || 'Sin rareza'}</p>
+                    <p><strong>Rareza:</strong> ${card.rarity || 'Sin rareza'} <img style="width:15px; filter: drop-shadow(0px 0px 2px black); vertical-align:middle; margin:0;" src="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/${card.rarity.toLowerCase()}.png"></p>
                     <p><strong>Set:</strong> (${card.set.code || 'N/A'}) ${card.set.name || 'Sin set'}</p>
                     ${card.illustrators ? `<p><strong>Artista:</strong> ${card.illustrators.join(', ')}</p>` : ''}
                     <div class="stats">
@@ -420,21 +423,21 @@
             linear-gradient(336deg, #eaf2ff 0%, #e6e0ff 40%, #ffe8f1 70%, #ffffff 100%);
             ">
                             <span>${card.cost || 'N/A'}</span>
-                            <small>Coste</small>
+                            <small>Cost</small>
                         </div>` : ''}
                         ${card.strength ? `<div style="
             background-image: url(https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/strength.png),
             linear-gradient(336deg, #eaf2ff 0%, #e6e0ff 40%, #ffe8f1 70%, #ffffff 100%);
             ">
                             <span>${card.strength || 'N/A'}</span>
-                            <small>Fuerza</small>
+                            <small>Strength</small>
                         </div>` : ''}
                         ${card.willpower ? `<div style="
             background-image: url(https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/will.png),
             linear-gradient(336deg, #eaf2ff 0%, #e6e0ff 40%, #ffe8f1 70%, #ffffff 100%);
             ">
                             <span>${card.willpower || 'N/A'}</span>
-                            <small>Voluntad</small>
+                            <small>Will</small>
                         </div>` : ''}                        
                         ${card.lore ? `<div style="
             background-image: url(https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/lore.png),
