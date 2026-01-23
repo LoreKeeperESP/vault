@@ -39,6 +39,8 @@ const cardTextTranslations = {
         "for the next location": "para la siguiente localización",
         "you may play her": "puedes jugarla",
         "exert chosen opposing character": "agota el personaje oponente seleccionado",
+        "your other characters get": "tus otros personajes obtienen",
+        "your other characters gain": "tus otros personajes ganan",
         // ------ TRES PALABRAS
         "at the start": "al comienzo",
         "whenever they quest": "cada vez que exploren",
@@ -67,7 +69,6 @@ const cardTextTranslations = {
         "to another caracter’s": "a otro personaje",
         "from each of": "de cada",
         "your other characters": "tus otros personajes",
-        "your other characters get": "tus otros personajes obtienen",
         "non-character card": "carta que no es de personaje",
         "play a character": "jugar un personaje",
         "from chosen character": "del personaje seleccionado",
