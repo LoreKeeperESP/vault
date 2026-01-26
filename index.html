@@ -414,7 +414,7 @@
                     ${card.classifications ? `<p>${card.classifications.join(', ')}</p>` : ''}
                     <p><strong>Tipo:</strong> ${card.type}</p>
                     <p><strong>Color:</strong> ${colorText}</p>
-                    <p><strong>Rareza:</strong> ${card.rarity || 'Sin rareza'} <img style="width:15px; filter: drop-shadow(0px 0px 2px black); vertical-align:middle; margin:0;" src="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/${card.rarity.toLowerCase()}.png"></p>
+                    <p><strong>Rareza:</strong> ${card.rarity === 'Super_rare' ? 'Super rare' : (card.rarity || 'Sin rareza')} <img style="width:15px; filter: drop-shadow(0px 0px 2px black); vertical-align:middle; margin:0;" src="https://raw.githubusercontent.com/LoreKeeperESP/vault/refs/heads/main/img/${card.rarity.toLowerCase()}.png"></p>
                     <p><strong>Set:</strong> (${card.set.code || 'N/A'}) ${card.set.name || 'Sin set'}</p>
                     ${card.illustrators ? `<p><strong>Artista:</strong> ${card.illustrators.join(', ')}</p>` : ''}
                     <div class="stats">
@@ -702,6 +702,7 @@
             max-width: 50%;
             object-fit: contain;
             margin: 10px;
+            border-radius: 10px;
         }
 
         .modal-info {
@@ -925,7 +926,7 @@
                 /* Limitar la altura máxima de la imagen al 40% de la pantalla */
                 object-fit: contain;
                 /* Ajustar la imagen dentro del contenedor */
-                margin: 10px 0;
+                margin: 10px auto;
             }
 
             .modal-info {
